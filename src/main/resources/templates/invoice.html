@@ -1,49 +1,44 @@
 <!DOCTYPE html>
-<html>
+<html xmlns:th="http://www.w3.org/1999/xhtml">
 <head>
-    <meta charset="utf-8">
+    <meta charset="utf-8"/>
     <title>Invoice <span th:text="${data.id}"></span></title>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"
-          integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+          integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous"/>
     <style>
-        h1,h2,h3,h4,p,span,div { font-family: DejaVu Sans; }
+        h1, h2, h3, h4, p, span, div {
+            font-family: DejaVu Sans;
+        }
     </style>
 </head>
 <body>
 <div style="clear:both; position:relative;">
     <div style="position:absolute; left:0pt; width:250pt;">
         <div th:if="${data.company.logo}">
-            <img class="img-rounded" style="max-width:250pt;max-height:100pt" th:src="${data.company.logo}">
+            <img class="img-rounded" style="max-width:250pt;max-height:100pt" th:src="${data.company.logo}"/>
         </div>
     </div>
     <div style="margin-left:300pt;">
-        <b>Date: </b> ${data.date}<br />
-        <b>Due date: </b> ${data.due_date}<br />
-        <b>Invoice: </b> ${data.id}
-        <br />
+        <b>Date: </b> <br th:text="${data.date}"/>
+        <b>Due date: </b><br th:text="${data.dueDate}"/>
+        <b>Invoice: </b><br th:text="${data.id}"/>
     </div>
 </div>
-<br />
-<!-- <h2>#{{ $data->id }}</h2> -->
+<br/>
 <div style="clear:both; position:relative;">
     <div style="position:absolute; left:0pt; width:250pt;">
         <h4>Business Details:</h4>
         <div class="panel panel-default">
             <div class="panel-body">
-                <b>{{ $data->company['summary'] }}</b>
+                <b th:text="${data.company.summary}"></b>
 
                 <br/><br/>
-
-                {!! array_key_exists('address_line_1', $data->company) && strlen($data->company['address_line_1']) > 0 ? $data->company['address_line_1'] . '<br/>' : '' !!}
-                {!! array_key_exists('address_line_2', $data->company) && strlen($data->company['address_line_2']) > 0 ? $data->company['address_line_2'] . '<br/>' : '' !!}
-                {!! array_key_exists('address_line_3', $data->company) && strlen($data->company['address_line_3']) > 0 ? $data->company['address_line_3'] . '<br/>' : '' !!}
-                {!! array_key_exists('address_line_4', $data->company) && strlen($data->company['address_line_4']) > 0 ? $data->company['address_line_4'] . '<br/>' : '' !!}
+                <div th:text="${data.company.address}"></div>
 
                 <br/>
-
-                {!! array_key_exists('phone', $data->company) && strlen($data->company['phone']) > 0 ? 'Phone: ' . $data->company['phone'] . '<br/>' : '' !!}
-                {!! array_key_exists('email', $data->company) && strlen($data->company['email']) > 0 ? 'Email: ' . $data->company['email'] . '<br/>' : '' !!}
-                {!! array_key_exists('siret', $data->company) && strlen($data->company['siret']) > 0 ? 'SIRET: ' . $data->company['siret'] . '<br/>' : '' !!}
+                <div th:text="${data.company.phone}"></div>
+                <div th:text="${data.company.email}"></div>
+                <div th:text="${data.company.siret}"></div>
             </div>
         </div>
     </div>
@@ -51,23 +46,19 @@
         <h4>Customer Details:</h4>
         <div class="panel panel-default">
             <div class="panel-body">
-                <b>{{ $data->customer['summary'] }}</b>
+                <b th:text="${data.customer.summary}"></b>
 
                 <br/><br/>
-
-                {!! array_key_exists('address_line_1', $data->customer) && strlen($data->customer['address_line_1']) > 0 ? $data->customer['address_line_1'] . '<br/>' : '' !!}
-                {!! array_key_exists('address_line_2', $data->customer) && strlen($data->customer['address_line_2']) > 0 ? $data->customer['address_line_2'] . '<br/>' : '' !!}
-                {!! array_key_exists('address_line_3', $data->customer) && strlen($data->customer['address_line_3']) > 0 ? $data->customer['address_line_3'] . '<br/>' : '' !!}
-                {!! array_key_exists('address_line_4', $data->customer) && strlen($data->customer['address_line_4']) > 0 ? $data->customer['address_line_4'] . '<br/>' : '' !!}
-
+                <div th:text="${data.customer.address}"></div>
                 <br/>
+                <div th:text="${data.customer.phone}"></div>
+                <div th:text="${data.customer.email}"></div>
 
-                {!! array_key_exists('phone', $data->customer) && strlen($data->customer['phone']) > 0 ? 'Phone: ' . $data->customer['phone'] . '<br/>' : '' !!}
-                {!! array_key_exists('email', $data->customer) && strlen($data->customer['email']) > 0 ? 'Email: ' . $data->customer['email'] . '<br/>' : '' !!}
             </div>
         </div>
     </div>
 </div>
+<br/>
 <h4>Items:</h4>
 <table class="table table-bordered">
     <thead>
@@ -82,35 +73,31 @@
     </tr>
     </thead>
     <tbody>
-        <tr th:each="item,iter : ${data.items}">
-            <td th:text="${iter.index}"></td>
-            <td th:text="${item.title}"></td>
-            <td th:text="${item.description}"></td>
-            <td th:text="${item.quantity}"></td>
-            <td th:text="${item.price+' '+data.currency}"></td>
-            <td th:text="${item.tax+'%'}"></td>
-            <td th:text="${item.total+' '+data.currency}"></td>
-        </tr>
+    <tr th:each="item,iter : ${data.items}">
+        <td th:text="${iter.index}"></td>
+        <td th:text="${item.title}"></td>
+        <td th:text="${item.description}"></td>
+        <td th:text="${item.quantity}"></td>
+        <td th:text="${item.price+''+data.currency}"></td>
+        <td th:text="${item.tax+'%'}"></td>
+        <td th:text="${item.total+''+data.currency}"></td>
+    </tr>
     </tbody>
 </table>
 <div style="clear:both; position:relative;">
-    @if($data->notes)
-    <div style="position:absolute; left:0pt; width:250pt;">
+    <div th:if="${data.notes}" style="position:absolute; left:0pt; width:250pt;">
         <h4>Notes:</h4>
         <div class="panel panel-default">
-            <div class="panel-body">
-                {{ $data->notes }}
-            </div>
+            <div class="panel-body" th:text="${data.notes}"></div>
         </div>
     </div>
-    @endif
     <div style="margin-left: 300pt;">
         <h4>Total:</h4>
         <table class="table table-bordered">
             <tbody>
             <tr>
                 <td><b>Subtotal</b></td>
-                <td>{{ $data->sub_total }} {{ $data->currency }}</td>
+                <td th:text="${data.subTotal+''+data.currency}"></td>
             </tr>
             <tr>
                 <td>
@@ -118,11 +105,11 @@
                         Taxes
                     </b>
                 </td>
-                <td>{{ $data->tax_total }} {{ $data->currency }}</td>
+                <td th:text="${data.taxTotal +''+data.currency}"></td>
             </tr>
             <tr>
                 <td><b>TOTAL (including taxes)</b></td>
-                <td><b>{{ $data->total }} {{ $data->currency }}</b></td>
+                <td><b th:text="${data.total+''+data.currency}"></b></td>
             </tr>
             </tbody>
         </table>

@@ -18,6 +18,8 @@ public class Invoice {
 
     String dueDate;
 
+    String date;
+
     @NotNull
     List<Item> items;
 
@@ -26,4 +28,12 @@ public class Invoice {
 
     @NotNull
     Company company;
+
+    String notes;
+
+    double total;
+
+    double subTotal;
+
+    double taxTotal;
 }

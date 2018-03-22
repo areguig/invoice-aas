@@ -13,7 +13,7 @@ public class Item {
 
     Integer quantity;
 
-    Double tax;
+    double tax;
 
-    Double total;
+    double total;
 }
